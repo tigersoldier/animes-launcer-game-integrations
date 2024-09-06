@@ -306,7 +306,7 @@ end
 
 -- Check if the game is installed
 function v1_game_is_installed(game_path)
-  return io.open(game_path .. "/UnityPlayer.dll", "rb") ~= nil
+  return io.open(game_path .. "/mhypbase.dll", "rb") ~= nil
 end
 
 -- Get installed game version
