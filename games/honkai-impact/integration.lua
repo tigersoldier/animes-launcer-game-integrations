@@ -373,33 +373,7 @@ end
 
 -- Get game integrity info
 function v1_game_get_integrity_info(game_path, edition)
-  local base_uri = game_api(edition)["data"]["game"]["latest"]["decompressed_path"]
-  local pkg_version = v1_network_fetch(base_uri .. "/pkg_version")
-
-  if not pkg_version["ok"] then
-    error("Failed to request game integrity info (code " .. pkg_version["status"] .. "): " .. pkg_version["statusText"])
-  end
-
-  local integrity = {}
-
-  for line in pkg_version["body"]:gmatch("([^\n]*)\n") do
-    if line ~= "" then
-      local info = v1_json_decode(line)
-
-      table.insert(integrity, {
-        ["hash"]  = "md5",
-        ["value"] = info["md5"]:lower(),
-
-        ["file"] = {
-          ["path"] = info["remoteName"],
-          ["uri"]  = base_uri .. "/" .. info["remoteName"],
-          ["size"] = info["fileSize"]
-        }
-      })
-    end
-  end
-
-  return integrity
+  return {}
 end
 
 -- Get list of game addons
