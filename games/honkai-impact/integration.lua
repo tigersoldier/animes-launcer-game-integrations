@@ -325,7 +325,6 @@ function v1_game_get_diff(game_path, edition)
   local game_data = game_api(edition)
 
   local latest_info = game_data["main"]["major"]
-  local patches = game_data["main"]["patches"]
 
   -- It should be impossible to have higher installed version
   -- but just in case I have to cover this case as well
@@ -339,30 +338,16 @@ function v1_game_get_diff(game_path, edition)
     }
   end
 
-  for _, patch in ipairs(patches) do
-    if patch["version"] == installed_version then
-      return {
-        ["current_version"] = installed_version,
-        ["latest_version"]  = latest_info["version"],
-
-        ["edition"] = edition,
-        ["status"]  = "outdated",
-
-        ["diff"] = {
-          ["type"] = "archive",
-          ["size"] = patch["game_pkgs"][1]["size"],
-          ["uri"]  = patch["game_pkgs"][1]["url"]
-        }
-      }
-    end
-  end
+  local download = v1_game_get_download(edition)
 
   return {
     ["current_version"] = installed_version,
     ["latest_version"]  = latest_info["version"],
 
     ["edition"] = edition,
-    ["status"]  = "unavailable"
+    ["status"]  = "outdated",
+
+    ["diff"] = download["download"]
   }
 end
 
